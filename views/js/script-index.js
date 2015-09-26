@@ -1,5 +1,4 @@
 var speedData = []
-console.log("file loaded successfully");
 
 function getSpeedData(data) {
   data = JSON.parse(data);
@@ -9,13 +8,20 @@ function getSpeedData(data) {
   console.log(speedData);
 }
 
+function getCurrentSpeedData() {
+  $.get("/wifi/init-get", function(data, status) {
+    speedData = JSON.parse(data);
+  });
+}
+
 $(document).ready( function() {
+  getCurrentSpeedData();
   console.log("PLEASE");
-  $.get("/wifi", function(data, status) {
+  $.get("/wifi/get", function(data, status) {
     getSpeedData(data);
   });
   window.setInterval( function () {
-    $.get("/wifi", function(data, status) {
+    $.get("/wifi/get", function(data, status) {
       getSpeedData(data);
     });
   }, 60000);
