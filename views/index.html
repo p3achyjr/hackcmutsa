@@ -2,15 +2,32 @@
 <html>
 <head>
   <title></title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <!--   <link rel="stylesheet" type="text/css" href="semantic-ui/dist/semantic.min.css"> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <!--<script src="semantic-ui/dist/semantic.min.js"></script>-->
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWBzaytXPgRB4vso1MSA5_fKnUsPG3Nus&callback=initMap">
   </script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=visualization"></script>
   <script src="/js/script-index.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
+<header class="bar"><ul>
+  <li><a href="#home">Home</a></li>
+  <li><a href="#news">Project</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#about">About</a></li>
+</ul></header>
 <body>
-  please work please work
+  <div id="mapCanvas"></div>
+  <div id="infoPanel">
+    <b>Marker status:</b>
+    <i><div id="markerStatus">Click and drag the marker.</div></i>
+    <b>Current position:</b>
+    <div id="info"></div>
+    <b>Closest matching address:</b>
+    <div id="address"></div>
+  </div>
 </body>
 </html>

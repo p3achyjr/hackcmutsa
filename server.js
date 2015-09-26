@@ -10,6 +10,43 @@ function mongoPush(data) {
   console.log("connected to mongodb");
 }
 
+function getSpeedTest(res) {
+  console.log('in block');
+  test = speedTest({maxTime:5000});
+  
+  test.on('data',function(data){
+    console.log(data);
+    data = JSON.stringify(data);
+    fs.appendFile('./master-wifi-data.txt', ",".concat(data.concat("\n")), function (err) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      console.log("file updated");
+    });
+    console.log('file should be updated');
+    res.end(data);
+  });
+
+  test.on('error',function(err){
+    console.error(err);
+  }); 
+}
+
+function setFileRequests(res, url) {
+  if(url == '/js/script-index.js') {
+    console.log("loading js")
+    fs.readFile('./views/js/script-index.js', function(err, data) {
+      res.end(data);
+    });
+  }
+  else if(url == '/css/style.css') {
+    fs.readFile('./views/css/style.css', function(err, data) {
+      res.end(data);
+    });
+  }
+}
+
 var server = http.createServer(function (req, res) {
   var url_parts = url.parse(req.url);
   console.log(url_parts);
@@ -22,26 +59,7 @@ var server = http.createServer(function (req, res) {
   // continuous get requests
   else if(url_parts.pathname == '/wifi/get') {
     // wifi code
-    console.log('in block');
-    test = speedTest({maxTime:5000});
-    
-    test.on('data',function(data){
-      console.log(data);
-      data = JSON.stringify(data);
-      fs.appendFile('./master-wifi-data.txt', ",".concat(data.concat("\n")), function (err) {
-        if (err) {
-          console.log(err);
-          throw err;
-        }
-        console.log("file updated");
-      });
-      console.log('file should be updated');
-      res.end(data);
-    });
-
-    test.on('error',function(err){
-      console.error(err);
-    }); 
+    getSpeedTest(res);
   } 
   // initial get request
   else if(url_parts.pathname == '/wifi/init-get') {
@@ -50,12 +68,8 @@ var server = http.createServer(function (req, res) {
     });
   }
   // get javascript
-  else if(url_parts.pathname == '/js/script-index.js') {
-    console.log("loading js")
-    fs.readFile('./views/js/script-index.js', function(err, data) {
-      console.log(data);
-      res.end(data);
-    });
+  else {
+    setFileRequests(res, url_parts.pathname);
   }
 
 
